@@ -35,7 +35,6 @@ class Battleship:
             copy[num] = " ".join(copy[num])
             TmpBoard += copy[num] + '\n'
         print(TmpBoard.replace('x', 'O'))
-        print((3, 2) == (3, 2))
         
     def CreatBoard(self):
         for number in range(self.y):
@@ -60,7 +59,15 @@ class Battleship:
             cancel = False
             print("Input your guess! \n")
             XGuess = int(input("X coordinate: "))
+            while XGuess >self.x:
+                XGuess = int(input("X coordinate: "))
+
             YGuess = int(input("Y coordinate: "))
+            while YGuess > self.y:
+                YGuess = int(input("Y coordinate: "))
+
+
+                
             print(f'({XGuess}, {YGuess}) was your guess!')
             for coord in self.coords:
                 if (XGuess, YGuess) == self.coords[coord][0]:
@@ -68,12 +75,12 @@ class Battleship:
                     self.correct += 1
                     print("HIT!!!")
                     cancel = True
-                    self.board[XGuess - 1][YGuess - 1] = "X"
+                    self.board[YGuess - 1][XGuess - 1] = "X"
                     break
             if not cancel:
                 print("MISS!!!")
                 self.miss += 1
-                self.board[XGuess - 1][YGuess - 1] = "M"
+                self.board[YGuess - 1][XGuess - 1] = "M"
             
             print(f'Correct: {self.correct} \nMisses: {self.miss} out of 5')
             self.PrintBoard()
@@ -81,7 +88,7 @@ class Battleship:
         print(f'You got {self.correct} correct!')
             
                     
-NewBoard = Battleship(10, 10, 5)
+NewBoard = Battleship(3, 3, 5)
 def main():
     NewBoard.CreatBoard()
     NewBoard.PrintBoard()

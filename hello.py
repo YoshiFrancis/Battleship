@@ -73,6 +73,7 @@ class Battleship:
             if not cancel:
                 print("MISS!!!")
                 self.miss += 1
+                self.board[XGuess - 1][YGuess - 1] = "M"
             
             print(f'Correct: {self.correct} \nMisses: {self.miss} out of 5')
             self.PrintBoard()

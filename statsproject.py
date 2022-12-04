@@ -17,7 +17,11 @@ def main():
     for el_class in classes:
         for music in musics:
             musicCount[music] = 0
-            classes[el_class][music] = {"count" : 0}
+            classes[el_class][music] = {
+                "count" : 0,
+                "GPA_AVG" : 0,
+                "ACT_AVG": 0
+                }
 
     cols = [1, 2, 3, 4]
     excel_file = pd.read_excel("Music and Grades in CBhS (Responses).xlsx", usecols = cols)
@@ -134,6 +138,9 @@ def plot_graphs():
         # to get the raw data
         #print(classes[level])
 
+        gpa_info = {}
+        act_info = {}
+
         x_gpa = []
         y_gpa = []
 
@@ -145,22 +152,51 @@ def plot_graphs():
                 if "GPA" in str(i):
                     #print(i, type(classes[level][music][i]))
                     x = classes[level][music][i]
-                    
-                    x_gpa.append(round(x, 2))
-                    y_gpa.append(music)
+                    gpa_info[music] =  round(x, 2)
                 if "ACT" in str(i):
                     #print(i, type(classes[level][music][i]))
-                    x = classes[level][music][i]
                     
-                    x_act.append(round(x, 2))
-                    y_act.append(music)
-        
-        print(x_gpa, y_gpa)
-        plt.bar(np.array(x_gpa), np.array(y_gpa))
-        plt.show()
+                    x = classes[level][music][i]
+                    act_info[music] = round(x, 2)
 
-        #plt.bar(np.array(x_act), np.array(y_act))
+        info = sorted(gpa_info.items(), key=lambda kv:
+            (kv[1], kv[0]))
+        
+        for i in info:
+            x_gpa.append(i[0])
+            y_gpa.append(i[1])
+
+        info = sorted(act_info.items(), key=lambda kv:
+            (kv[1], kv[0]))
+        
+        for i in info:
+            x_act.append(i[0])
+            y_act.append(i[1])
+
+        #print(x_act, y_act)
+        #plt.bar(np.array(x_gpa), np.array(y_gpa))
         #plt.show()
+
+        fig, ax = plt.subplots()
+        
+        
+        #ax.set_ylabel('GPA')
+        #ax.set_xlabel("Music")
+        #ax.set_title(f"{level} Class")
+
+        #plt.bar(np.array(x_gpa), np.array(y_gpa))
+        #plt.ylim(top=100)
+        #plt.show()
+
+
+
+        ax.set_ylabel('ACT Scores')
+        ax.set_xlabel("Music")
+        ax.set_title(f"{level} Class")
+
+        plt.bar(np.array(x_act), np.array(y_act))
+        plt.ylim(top=36)
+        plt.show()
 
 
 def get_avg_grade(grade):

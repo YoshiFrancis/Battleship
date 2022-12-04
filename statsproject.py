@@ -1,4 +1,5 @@
 import pandas as pd
+import decimal
 
 musics = ["Classical", "Jazz", "Rap", "Pop", "Rock", "EDM", "Country", "Alternative", "Indie", "Cultural", "Lo-Fi", "Fortnite"]
 gradeLevel = ["Senior", "Junior", "Sophomore", "Freshman"]
@@ -73,19 +74,50 @@ def main():
         
         # increments count of total amount the music had been chosen in the specific class and overall
 
-    print_class_info()
+        print_all_class_info()
+        plot_graphs()
 
     #displays the total count for each music genre
     print("This shows the total amount of music in total")
     for music in musics:
         print(f"{music}: {musicCount[music]}")
 
+
+def print_all_class_info():
+    for level in gradeLevel:
+        print(f"------------This is the information for the {level}s------------")
+        # to get the raw data
+        for music in musics:
+            gpa_sum = 0
+            act_sum = 0
+            ACTcount = classes[level][music]["count"]
+            print("                                                         " + music + ":")
+            for i in range(0, classes[level][music]["count"]):
+                gpa_sum += classes[level][music][i]['_AvgGrade'] 
+                if classes[level][music][i]['_AvgACT'] == 0:
+                    ACTcount -= 1
+                    continue   
+                act_sum += classes[level][music][i]['_AvgACT']
+            
+            if classes[level][music]["count"] == 0: 
+                continue
+            classes[level][music]["GPA_AVG"] = gpa_sum / classes[level][music]["count"]
+            if ACTcount == 0:
+                ACTcount = 1
+            classes[level][music]["ACT_AVG"] = act_sum / ACTcount
+            print(f'Average GPA: {round(classes[level][music]["GPA_AVG"], 2)}')
+            print(f'Average ACT: {round(classes[level][music]["ACT_AVG"], 2)}')
+        #print(classes[level])
+        
+                
+
+
 #displays music information in each class
 def print_class_info():
     for level in gradeLevel:
         print(f"------------This is the information for the {level}s------------")
         # to get the raw data
-        #print(classes[level])
+        print(classes[level])
         for music in musics:
             print("                                                         " + music + ":")
             for i in range(0, classes[level][music]["count"]):
@@ -93,6 +125,26 @@ def print_class_info():
                 print(f"Recorded ACT: {classes[level][music][i]['ACT']}")
         
         print("\n")
+
+def plot_graphs():
+    for level in gradeLevel:
+        print(f"------------This is the information for the {level}s------------")
+        # to get the raw data
+        #print(classes[level])
+
+        for music in musics:
+            print(" " + music + ":") 
+            for i in classes[level][music]:
+                if "GPA" in str(i):
+                    print(i, classes[level][music][i])
+                if "ACT" in str(i):
+                    print(i, classes[level][music][i])
+
+
+            #print(classes[level][music]['GPA_AVG'])
+
+            #print(f"Average Grade: {classes[level][music]['GPA_AVG']}")
+            #print(f"Recorded ACT: {classes[level][music]['ACT_AVG']}")
     
 
 def get_avg_grade(grade):

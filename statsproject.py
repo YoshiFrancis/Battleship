@@ -42,13 +42,15 @@ def main():
             copy = music[x][:].split(", ")
             classes[grade[x]][copy[0]][classes[grade[x]][copy[0]]["count"]] = {
                 "AvgGrade" : average_grade[x],
-                "ACT" : act[x]
-
+                "ACT" : act[x],
+                "_AvgGrade": get_avg_grade(average_grade[x]),
+                "_AvgACT": get_avg_act(act[x])
             }
             classes[grade[x]][copy[1]][classes[grade[x]][copy[1]]["count"]] = {
                 "AvgGrade" : average_grade[x],
-                "ACT" : act[x]
-
+                "ACT" : act[x],
+                "_AvgGrade": get_avg_grade(average_grade[x]),
+                "_AvgACT": get_avg_act(act[x])
             }
             classes[grade[x]][copy[0]]["count"] += 1
             classes[grade[x]][copy[1]]["count"] += 1
@@ -58,7 +60,9 @@ def main():
         else:
             classes[grade[x]][music[x]][classes[grade[x]][music[x]]["count"]] = {
                 "AvgGrade" : average_grade[x],
-                "ACT" : act[x]
+                "ACT" : act[x],
+                "_AvgGrade": get_avg_grade(average_grade[x]),
+                "_AvgACT": get_avg_act(act[x])
             }
             classes[grade[x]][music[x]]["count"] += 1
             musicCount[music[x]] += 1
@@ -69,7 +73,15 @@ def main():
         
         # increments count of total amount the music had been chosen in the specific class and overall
 
-    #displays music information in each class
+    print_class_info()
+
+    #displays the total count for each music genre
+    print("This shows the total amount of music in total")
+    for music in musics:
+        print(f"{music}: {musicCount[music]}")
+
+#displays music information in each class
+def print_class_info():
     for level in gradeLevel:
         print(f"------------This is the information for the {level}s------------")
         # to get the raw data
@@ -81,11 +93,39 @@ def main():
                 print(f"Recorded ACT: {classes[level][music][i]['ACT']}")
         
         print("\n")
+    
 
-    #displays the total count for each music genre
-    print("This shows the total amount of music in total")
-    for music in musics:
-        print(f"{music}: {musicCount[music]}")
+def get_avg_grade(grade):
+    if "90" in grade:
+        return 95
+    elif "80" in grade:
+        return 85
+    elif "70" in grade:
+        return 75
+    else:
+        return 65
+
+def get_avg_act(act):
+    if "33" in act:
+        return 34.5
+    elif "30" in act:
+        return 31
+    elif "26" in act:
+        return 27.5
+    elif "23" in act:
+        return 24
+    elif "19" in act:
+        return 20.5
+    elif "15" in act:
+        return 16.5
+    elif "11" in act:
+        return 12.5
+    elif "1" in act:
+        return 3.5
+    else:
+        return 0
+
+
 
 
 if __name__=="__main__":

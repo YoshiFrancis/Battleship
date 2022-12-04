@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 import decimal
 
 musics = ["Classical", "Jazz", "Rap", "Pop", "Rock", "EDM", "Country", "Alternative", "Indie", "Cultural", "Lo-Fi", "Fortnite"]
@@ -74,13 +76,13 @@ def main():
         
         # increments count of total amount the music had been chosen in the specific class and overall
 
-        print_all_class_info()
-        plot_graphs()
+
+    print_all_class_info()
+    plot_graphs()
 
     #displays the total count for each music genre
-    print("This shows the total amount of music in total")
-    for music in musics:
-        print(f"{music}: {musicCount[music]}")
+    #print_count()
+    
 
 
 def print_all_class_info():
@@ -132,20 +134,34 @@ def plot_graphs():
         # to get the raw data
         #print(classes[level])
 
+        x_gpa = []
+        y_gpa = []
+
+        x_act = []
+        y_act = []
+
         for music in musics:
-            print(" " + music + ":") 
             for i in classes[level][music]:
                 if "GPA" in str(i):
-                    print(i, classes[level][music][i])
+                    #print(i, type(classes[level][music][i]))
+                    x = classes[level][music][i]
+                    
+                    x_gpa.append(round(x, 2))
+                    y_gpa.append(music)
                 if "ACT" in str(i):
-                    print(i, classes[level][music][i])
+                    #print(i, type(classes[level][music][i]))
+                    x = classes[level][music][i]
+                    
+                    x_act.append(round(x, 2))
+                    y_act.append(music)
+        
+        print(x_gpa, y_gpa)
+        plt.bar(np.array(x_gpa), np.array(y_gpa))
+        plt.show()
 
+        #plt.bar(np.array(x_act), np.array(y_act))
+        #plt.show()
 
-            #print(classes[level][music]['GPA_AVG'])
-
-            #print(f"Average Grade: {classes[level][music]['GPA_AVG']}")
-            #print(f"Recorded ACT: {classes[level][music]['ACT_AVG']}")
-    
 
 def get_avg_grade(grade):
     if "90" in grade:
@@ -177,7 +193,10 @@ def get_avg_act(act):
     else:
         return 0
 
-
+def print_count():
+    print("This shows the total amount of music in total")
+    for music in musics:
+        print(f"{music}: {musicCount[music]}")
 
 
 if __name__=="__main__":
